@@ -22,17 +22,17 @@ environment:
 install:
   - bash -lc "curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh"
   - ros install neil-lindquist/ci-utils #for asdf-register-project and run-fiveam
-  - bash -lc "asdf-register-project"
+  - ros exec asdf-register-project.ros
 #  - ros install prove #for run-prove
 #  - ros install rove #for [run-] rove
 
 build: off
 
 test_script:
-  - bash -lc "run-fiveam -e t -l foo/test :foo-tests"
-  - bash -lc "run-fiveam -e t -l foo/test :foo-tests-error"
-  #- run-prove foo.asd
-  #- rove foo.asd
+  - ros exec run-fiveam.ros -e t -l foo/test :foo-tests
+  - ros exec run-fiveam.ros -e t -l foo/test :foo-tests-error
+  #- ros exec run-prove foo.asd
+  #- ros exec rove foo.asd
 
 
 
