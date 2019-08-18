@@ -13,6 +13,5 @@
   :license "MIT"
   :depends-on ("foo"
                "fiveam")
-  :pathname "t"
   :components ((:file "tests"))
   :perform (test-op (o c) (symbol-call '#:fiveam '#:run! :foo-tests)))
