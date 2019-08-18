@@ -1,0 +1,18 @@
+variables:
+  LISP: sbcl-bin
+  LISP: ccl-bin
+  LISP: abcl
+  LISP: ecl
+  LISP: alisp
+  LISP: cmucl
+
+before_script:
+  - PATH=~/.roswell/bin:$PATH
+  - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
+  - ros install neil-lindquist/ci-utils
+  - ros exec asdf-register-project.ros
+
+test:
+  script:
+    - run-fiveam.ros -l foo/test :foo-tests
+    - run-fiveam.ros -l foo/test :foo-tests-error
