@@ -3,6 +3,8 @@
         :fiveam))
 (in-package :foo-tests)
 
+(format t "Loading foo/tests")
+
 (test :foo-tests
   (format t "Running tests~%")
   (is (= 2 (+ 1 1))))
