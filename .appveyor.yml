@@ -30,6 +30,7 @@ build: off
 
 test_script:
   - ros exec run-fiveam.ros -e t -l foo/test :foo-tests
+  - ros exec run-fiveam.ros -e t -l foo/test :foo-tests-error
   #- ros exec run-prove foo.asd
   #- ros exec rove foo.asd
 

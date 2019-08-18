@@ -61,5 +61,6 @@ install:
 
 script:
   - run-fiveam -e t -l foo/test :foo-tests
+  - run-fiveam -e t -l foo/test :foo-tests-error
   #- run-prove foo.asd
   #- rove foo.asd
