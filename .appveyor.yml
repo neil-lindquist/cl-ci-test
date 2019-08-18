@@ -32,3 +32,11 @@ test_script:
   - ros exec run-fiveam.ros -e t -l foo/test :foo-tests
   #- ros exec run-prove foo.asd
   #- ros exec rove foo.asd
+
+
+
+notifications:
+  - provider: Email
+    on_build_success: false
+    on_build_failure: false
+    on_build_status_changed: false
