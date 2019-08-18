@@ -13,11 +13,6 @@ environment:
   PLATFORM: x64
   matrix:
     - LISP: sbcl-bin
-    - LISP: ccl-bin
-    - LISP: abcl
-    - LISP: ecl
-    - LISP: alisp
-    - LISP: cmucl
 
 install:
   - bash -lc "curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh"
