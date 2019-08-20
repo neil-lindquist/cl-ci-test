@@ -10,8 +10,7 @@ addons:
 # Runs each lisp implementation on each OS
 os:
   - linux
-  - osx
-  - windows
+#  - osx # OSX has a long setup on travis, so just run select implementations on OSX
 
 env:
   global:
@@ -26,10 +25,12 @@ env:
     - LISP=cmucl
 
 # Additional OS/Lisp combinations can be added to those generated above
-#matrix:
-#  include:
-#    - os: osx
-#      LISP: sbcl-bin
+matrix:
+  include:
+    - os: osx
+      LISP: sbcl-bin
+    - os: osx
+      LISP: ccl-bin
 
 # Some jobs can be marked as allowed to fail
 # Note that this should only be used if there is no interest for the library to work on that system
