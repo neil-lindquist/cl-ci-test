@@ -17,7 +17,7 @@ environment:
 install:
   - bash -lc "curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh"
   - ros install neil-lindquist/ci-utils #for asdf-register-project and run-fiveam
-  - ros exec asdf-register-project.ros
+  - ros -Q -- ~/.roswell/bin/asdf-register-project
 #  - ros install prove #for run-prove
 #  - ros install rove #for [run-] rove
 
