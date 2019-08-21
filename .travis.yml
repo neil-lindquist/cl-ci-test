@@ -7,7 +7,7 @@ addons:
       - libc6-i386 # needed for a couple implementations
       - openjdk-7-jre # needed for abcl
 
-# Runs each lisp implementation on each OS
+# Runs each lisp implementation on each of the listed OS
 os:
   - linux
 #  - osx # OSX has a long setup on travis, so just run select implementations on OSX
@@ -16,6 +16,7 @@ env:
   global:
     - PATH=~/.roswell/bin:$PATH
     - ROSWELL_INSTALL_DIR=$HOME/.roswell
+#    - COVERAGE_EXCLUDE=t  # for prove or rove
   matrix:
     - LISP=sbcl-bin COVERALLS=true
     - LISP=abcl
@@ -56,12 +57,11 @@ install:
 #  - ros install prove #for run-prove
 #  - ros install rove #for [run-] rove
 
-  # If needing asdf 3.16 or higher uncomment the following lines
+  # If asdf 3.16 or higher is needed uncomment the following lines
   #- mkdir -p ~/common-lisp
   #- if [ "$LISP" == "ccl-bin" ]; then git clone https://gitlab.common-lisp.net/asdf/asdf.git ~/common-lisp; fi
 
 script:
   - run-fiveam -e t -l foo/test :foo-tests
-  - run-fiveam -e t -l foo/test :foo-tests-error
   #- run-prove foo.asd
   #- rove foo.asd
