@@ -24,6 +24,7 @@ install:
 build: off
 
 test_script:
+  - echo %PATH%
   #- ros -Q -- ~/.roswell/bin/run-fiveam -e t -l foo/test :foo-tests
   #- ros -Q -- ~/.roswell/bin/run-fiveam -e t -l foo/test :foo-tests-error
   - bash -lc "run-fiveam -e t -l foo/test :foo-tests"
