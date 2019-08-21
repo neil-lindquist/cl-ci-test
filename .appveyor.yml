@@ -9,7 +9,7 @@ environment:
   MSYS2_ARCH: x86_64
   MSYS2_DIR: msys64
   MSYSTEM: MINGW64
-  PATH: c:\msys64\usr\bin;c:\msys64\mingw64\bin;C:\msys64\usr\local\bin\;%HOME%\.roswell\bin\;%PATH%
+  PATH: c:\msys64\usr\bin;c:\msys64\mingw64\bin;C:\msys64\usr\local\bin\;C:\Users\appveyor\.roswell\bin\;%PATH%
   PLATFORM: x64
   matrix:
     - LISP: sbcl-bin
