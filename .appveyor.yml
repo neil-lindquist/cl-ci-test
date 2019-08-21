@@ -29,10 +29,3 @@ test_script:
   - bash -lc "run-fiveam -e t -l foo/test :foo-tests-error"
   #- bash -lc "run-prove foo.asd"
   #- bash -lc "rove foo.asd"
-
-
-notifications:
-  - provider: Email
-    on_build_success: false
-    on_build_failure: false
-    on_build_status_changed: false
