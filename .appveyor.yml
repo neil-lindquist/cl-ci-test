@@ -25,9 +25,9 @@ build: off
 
 test_script:
   - ros -Q -- ~/.roswell/bin/run-fiveam -e t -l foo/test :foo-tests
-  - echo %PATH%
-  - ros bash -lc "~/.roswell/bin/run-fiveam -e t -l foo/test :foo-tests"
-  - where run-fiveam
+  - ros -Q -- ~/.roswell/bin/run-fiveam -e t -l foo/test :foo-tests-error
+  - bash -lc "~/.roswell/bin/run-fiveam -e t -l foo/test :foo-tests"
+  - bash -lc "~/.roswell/bin/run-fiveam -e t -l foo/test :foo-tests-error"
   #- ros exec run-prove foo.asd
   #- ros exec rove foo.asd
 
