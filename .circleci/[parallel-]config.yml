@@ -1,0 +1,38 @@
+version: 2
+
+#### THIS APPROACH DOESN'T PROVIDE BENIFIT ####
+# Parallelism's use is for when you want to run a single test in parallel
+# IE something like: run-fiveam -e t -l foo/test $(circleci tests glob :foo :bar :baz :quz)
+
+### Rename this file to config.yml is actually used ###
+
+# This file shows how to use CircleCI's parallelism feature to test multiple implementations in parallel
+# However CircleCI's support for running multiple jobs is limited and cumbersome
+# Public repositories can run 4 jobs in parallel for free, while private ones can only run 1 job for free
+# For testing more lisp implementations than that you need to use workflows
+
+jobs:
+  test:
+    docker:
+      - image: circleci/buildpack-deps:stretch-curl
+    parallelism: 4
+    steps:
+      - checkout
+      # This is the only way CircleCI allows setting environmental variables accross steps
+      - run:
+          name: Setup Environment Variables
+          command: |
+            echo "export PATH=$HOME/.roswell/bin:$PATH" >> $BASH_ENV
+            echo "export LISP=$(circleci tests glob \"sbcl-bin\" \"ccl-bin\" \"alisp\" \"ecl\")"
+          # Modify the preceding line to list the LISP implementations to test
+          # The number of implementations MUST equal the value of the parallism attribute above
+
+      - run: echo $LISP
+      - run: curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
+      - run: ros install ci-utils #for run-fiveam
+      #- run: ros install prove #for run-prove
+      #- run: ros install rove #for [run-] rove
+
+      - run: run-fiveam -e t -l foo/test :foo-tests
+      #- run: run-prove foo.asd
+      #- run: rove foo.asd
