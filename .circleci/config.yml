@@ -8,7 +8,7 @@ jobs:
       LISP: sbcl-bin
     steps:
        - checkout
-       - run: PATH=~/.roswell/bin:$PATH
+       - run: PATH=$HOME/.roswell/bin:$PATH
        - run: curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
        - run: ros install neil-lindquist/ci-utils
        - run: run-fiveam -e t -l foo/test :foo-tests
