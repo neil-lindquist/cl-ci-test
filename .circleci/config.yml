@@ -7,10 +7,14 @@ jobs:
     environment:
       LISP: sbcl-bin
     steps:
-       - checkout
-       - run: PATH=$HOME/.roswell/bin:$PATH
-       - run: curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
-       - run: ros install neil-lindquist/ci-utils
-       - run: echo $PATH
-       - run: run-fiveam -e t -l foo/test :foo-tests
-       - run: run-fiveam -e t -l foo/test :foo-tests-error
+      - checkout
+      # This is the only way CircleCI allows setting environmental variables accross steps
+      - run:
+        name: Setup Environment Variables
+        command: echo "export PATH=$HOME/.roswell/bin:$PATH" >> $BASH_ENV
+
+      - run: curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
+      - run: ros install neil-lindquist/ci-utils
+      
+      - run: run-fiveam -e t -l foo/test :foo-tests
+      - run: run-fiveam -e t -l foo/test :foo-tests-error
