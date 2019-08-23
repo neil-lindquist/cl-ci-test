@@ -1,18 +1,22 @@
-variables:
-  LISP: sbcl-bin
-  LISP: ccl-bin
-  LISP: abcl
-  LISP: ecl
-  LISP: alisp
-  LISP: cmucl
+.test:
+  before_script:
+    - PATH=$HOME/.roswell/bin:$PATH
+    - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
+    - ros install neil-lindquist/ci-utils
+    - asdf-register-project
 
-before_script:
-  - PATH=$HOME/.roswell/bin:$PATH
-  - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
-  - ros install neil-lindquist/ci-utils
-  - asdf-register-project
+  test:
+    script:
+      - run-fiveam -l foo/test :foo-tests
+      - run-fiveam -l foo/test :foo-tests-error
 
-test:
-  script:
-    - run-fiveam -l foo/test :foo-tests
-    - run-fiveam -l foo/test :foo-tests-error
+
+sbcl:
+  extends: .test
+  variables:
+    LISP: sbcl-bin
+
+ccl:
+  extends: .test
+  variables:
+    LISP: ccl-bin
