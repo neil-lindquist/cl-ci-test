@@ -5,18 +5,18 @@
     - ros install neil-lindquist/ci-utils
     - asdf-register-project
 
-  test:
-    script:
-      - run-fiveam -l foo/test :foo-tests
-      - run-fiveam -l foo/test :foo-tests-error
+  script:
+    - run-fiveam -l foo/test :foo-tests
+    - run-fiveam -l foo/test :foo-tests-error
 
 
-sbcl:
+test-sbcl:
   extends: .test
   variables:
     LISP: sbcl-bin
 
-ccl:
+
+test-ccl:
   extends: .test
   variables:
     LISP: ccl-bin
