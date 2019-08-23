@@ -1,13 +1,14 @@
 version: 2
 
+# Note that CircleCI's support for multiple jobs with the same steps is nonexistant.
+# So, each implementation needs an entry in the jobs group, and to be listed in the workflows section at the bottom.
+
 jobs:
-  build:
+  sbcl:
     docker:
       - image: circleci/buildpack-deps:stretch-curl
-# Uncomment the following two lines if not using parallelism
-#    environment:
-#      LISP: sbcl-bin
-    parallelism: 4 #remove this line if not using parallelism
+    environment:
+      LISP: sbcl-bin
     steps:
       - checkout
       # This is the only way CircleCI allows setting environmental variables accross steps
@@ -15,14 +16,38 @@ jobs:
           name: Setup Environment Variables
           command: |
             echo "export PATH=$HOME/.roswell/bin:$PATH" >> $BASH_ENV
-            echo "export LISP=$(circleci tests glob \"sbcl-bin\" \"ccl-bin\" \"alisp\" \"ecl\")"
-          # Modify the preceding line to list the LISP implementations to test
-          # The number of implementations MUST equal the value of the parallism attribute above
-          # Remove the line if not using parallelism
 
       - run: echo $LISP
       - run: curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
       - run: ros install neil-lindquist/ci-utils
 
       - run: run-fiveam -e t -l foo/test :foo-tests
-      - run: run-fiveam -e t -l foo/test :foo-tests-error
+      #- run: run-fiveam -e t -l foo/test :foo-tests-error
+  ccl:
+    docker:
+      - image: circleci/buildpack-deps:stretch-curl
+    environment:
+      LISP: ccl-bin
+    steps:
+      - checkout
+      # This is the only way CircleCI allows setting environmental variables accross steps
+      - run:
+          name: Setup Environment Variables
+          command: |
+            echo "export PATH=$HOME/.roswell/bin:$PATH" >> $BASH_ENV
+
+      - run: echo $LISP
+      - run: curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
+      - run: ros install neil-lindquist/ci-utils
+
+      - run: run-fiveam -e t -l foo/test :foo-tests
+      #- run: run-fiveam -e t -l foo/test :foo-tests-error
+
+
+
+workflows:
+  version: 2
+  run_tests:
+    jobs:
+      - sbcl
+      - ccl
