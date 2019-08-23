@@ -7,12 +7,12 @@ variables:
   LISP: cmucl
 
 before_script:
-  - PATH=~/.roswell/bin:$PATH
+  - PATH=$HOME/.roswell/bin:$PATH
   - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
   - ros install neil-lindquist/ci-utils
-  - ros exec asdf-register-project.ros
+  - asdf-register-project
 
 test:
   script:
-    - run-fiveam.ros -l foo/test :foo-tests
-    - run-fiveam.ros -l foo/test :foo-tests-error
+    - run-fiveam -l foo/test :foo-tests
+    - run-fiveam -l foo/test :foo-tests-error
