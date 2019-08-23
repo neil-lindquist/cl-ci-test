@@ -4,9 +4,10 @@ jobs:
   build:
     docker:
       - image: circleci/buildpack-deps:stretch-curl
-    environment:
+# Uncomment the following two lines if not using parallelism
+#    environment:
 #      LISP: sbcl-bin
-    parallelism: 4
+    parallelism: 4 #remove this line if not using parallelism
     steps:
       - checkout
       # This is the only way CircleCI allows setting environmental variables accross steps
@@ -15,6 +16,9 @@ jobs:
           command: |
             echo "export PATH=$HOME/.roswell/bin:$PATH" >> $BASH_ENV
             echo "export LISP=$(circleci tests glob \"sbcl-bin\" \"ccl-bin\" \"alisp\" \"ecl\")"
+          # Modify the preceding line to list the LISP implementations to test
+          # The number of implementations MUST equal the value of the parallism attribute above
+          # Remove the line if not using parallelism
 
       - run: echo $LISP
       - run: curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | bash
