@@ -34,25 +34,23 @@ jobs:
 
     steps:
       - bash: |
-          PATH=$HOME/.roswell/bin:$PATH
-          ROSWELL_INSTALL_DIR=$HOME/.roswell
+          PATH=$AGENT_HOMEDIRECTORY/.roswell/bin:$PATH
+          ROSWELL_INSTALL_DIR=$AGENT_HOMEDIRECTORY/.roswell
           curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
-          echo $env:HOME
-          echo $env:USERPROFILE
-          $env:Path += "$($env:HOME)\.roswell\bin"
-          Invoke-WebRequest -Uri $($env:ROSWELL_ZIP) -OutFile Roswell.zip
-          7z x -o$($env:HOME) Roswell.zip
-          Copy-Item -Path $($env:HOME)\roswell\* -Destination $($env:HOME)\.roswell\bin
+          $env:Path += "$($env:AGENT_HOMEDIRECTORY)\.roswell\bin"
+          Invoke-WebRequest -Uri $($env:AGENT_HOMEDIRECTORY) -OutFile Roswell.zip
+          7z x -o$($env:AGENT_HOMEDIRECTORY) Roswell.zip
+          Copy-Item -Path $($env:AGENT_HOMEDIRECTORY)\roswell\* -Destination $($env:AGENT_HOMEDIRECTORY)\.roswell\bin
           ros install $env:LISP
           ros config
         displayName: Install Roswell
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
       - bash: |
-          PATH=$HOME/.roswell/bin:$PATH
+          PATH=$AGENT_HOMEDIRECTORY/.roswell/bin:$PATH
           ros install neil-lindquist/ci-utils
           asdf-register-project
           run-fiveam -e t -l foo/test :foo-tests-errors
