@@ -40,11 +40,11 @@ jobs:
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
-          $env:Path += "$(Env:HOME)\.roswell\bin"
-          Invoke-WebRequest -Uri $$(Env:ROSWELL_ZIP) -OutFile Roswell.zip
-          7z x -o$(Env:HOME) Roswell.zip
-          Copy-Item -Path $(Env:HOME)\roswell\* -Destination $(Env:HOME)\.roswell\bin
-          ros install $(Env:LISP)
+          $env:Path += "$($env:HOME)\.roswell\bin"
+          Invoke-WebRequest -Uri $($env:ROSWELL_ZIP) -OutFile Roswell.zip
+          7z x -o$($env:HOME) Roswell.zip
+          Copy-Item -Path $($env:HOME)\roswell\* -Destination $($env:HOME)\.roswell\bin
+          ros install $env:LISP
           ros config
         displayName: Install Roswell
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
