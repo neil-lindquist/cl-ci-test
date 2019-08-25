@@ -42,7 +42,7 @@ jobs:
       - pwsh: |
           $env:Path += "$Env:HOME\.roswell\bin"
           Invoke-WebRequest -Uri $Env:ROSWELL_ZIP -OutFile Roswell.zip
-          7z x -o$Env:USERPROFILE Roswell.zip
+          7z x -o$Env:HOME Roswell.zip
           Copy-Item -Path $Env:HOME\roswell\* -Destination $Env:HOME\.roswell\bin
           ros install $Env:LISP
           ros config
@@ -53,6 +53,6 @@ jobs:
           PATH=$HOME/.roswell/bin:$PATH
           ros install neil-lindquist/ci-utils
           asdf-register-project
-          run-fiveam -e t -l foo/test :foo-tests
           run-fiveam -e t -l foo/test :foo-tests-errors
+          run-fiveam -e t -l foo/test :foo-tests
         displayName: Run Tests
