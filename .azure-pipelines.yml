@@ -31,11 +31,14 @@ jobs:
 
     steps:
       - bash: |
+          PATH=$HOME/.roswell/bin:$PATH
+          ROSWELL_INSTALL_DIR=$HOME/.roswell
           curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
           ros install neil-lindquist/ci-utils
           asdf-register-project
         displayName: Install roswell and tools
       - bash: |
+          PATH=$HOME/.roswell/bin:$PATH
           run-fiveam -e t -l foo/test :foo-tests
           run-fiveam -e t -l foo/test :foo-tests-errors
         displayName: Run Tests
