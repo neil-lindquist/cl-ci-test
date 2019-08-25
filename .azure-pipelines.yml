@@ -40,6 +40,8 @@ jobs:
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
+          echo $env:HOME
+          echo $env:USERPROFILE
           $env:Path += "$($env:HOME)\.roswell\bin"
           Invoke-WebRequest -Uri $($env:ROSWELL_ZIP) -OutFile Roswell.zip
           7z x -o$($env:HOME) Roswell.zip
