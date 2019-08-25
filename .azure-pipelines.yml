@@ -42,8 +42,8 @@ jobs:
       - pwsh: |
           $env:Path += "$($env:AGENT_HOMEDIRECTORY)\.roswell\bin"
           Invoke-WebRequest -Uri $($env:ROSWELL_ZIP) -OutFile Roswell.zip
-          7z x -o$($env:AGENT_HOMEDIRECTORY) Roswell.zip
-          Copy-Item -Path $($env:AGENT_HOMEDIRECTORY)\roswell\* -Destination $($env:AGENT_HOMEDIRECTORY)\.roswell\bin
+          7z x -o"$($env:AGENT_HOMEDIRECTORY)"" Roswell.zip
+          Copy-Item -Path "$($env:AGENT_HOMEDIRECTORY)\roswell\*" -Destination "$($env:AGENT_HOMEDIRECTORY)\.roswell\bin"
           ros install $env:LISP
           ros config
         displayName: Install Roswell
@@ -52,6 +52,8 @@ jobs:
       - bash: |
           PATH=$AGENT_HOMEDIRECTORY/.roswell/bin:$PATH
           ros install neil-lindquist/ci-utils
+          echo $PATH
+          ls $AGENT_HOMEDIRECTORY/.roswell/bin
           asdf-register-project
           run-fiveam -e t -l foo/test :foo-tests-errors
           run-fiveam -e t -l foo/test :foo-tests
