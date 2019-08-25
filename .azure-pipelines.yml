@@ -41,7 +41,7 @@ jobs:
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
           $env:Path += "$($env:AGENT_HOMEDIRECTORY)\.roswell\bin"
-          Invoke-WebRequest -Uri $($env:AGENT_HOMEDIRECTORY) -OutFile Roswell.zip
+          Invoke-WebRequest -Uri $($env:ROSWELL_ZIP) -OutFile Roswell.zip
           7z x -o$($env:AGENT_HOMEDIRECTORY) Roswell.zip
           Copy-Item -Path $($env:AGENT_HOMEDIRECTORY)\roswell\* -Destination $($env:AGENT_HOMEDIRECTORY)\.roswell\bin
           ros install $env:LISP
