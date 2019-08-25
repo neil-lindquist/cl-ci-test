@@ -40,6 +40,7 @@ jobs:
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
+          echo $env:AGENT_HOMEDIRECTORY
           $env:Path += "$($env:AGENT_HOMEDIRECTORY)\.roswell\bin"
           Invoke-WebRequest -Uri $($env:ROSWELL_ZIP) -OutFile Roswell.zip
           7z x -o"$($env:AGENT_HOMEDIRECTORY)"" Roswell.zip
@@ -50,6 +51,8 @@ jobs:
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
       - bash: |
+          echo home = $HOME
+          echo Agent home = $AGENT_HOMEDIRECTORY
           PATH=$AGENT_HOMEDIRECTORY/.roswell/bin:$PATH
           ros install neil-lindquist/ci-utils
           echo $PATH
