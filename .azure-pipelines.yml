@@ -8,7 +8,6 @@ trigger:
 
 variables:
   ROSWELL_ZIP: https://ci.appveyor.com/api/projects/snmsts/roswell-en89n/artifacts/Roswell-x86_64.zip?branch=master&job=Environment%3A%20MSYS2_ARCH%3Dx86_64,%20MSYS2_BITS%3D64,%20MSYSTEM%3DMINGW64,%20METHOD%3Dcross
-  ROSWELL_DIR: $(Agent.TempDirectory)/roswell
 
 jobs:
   - job: 'Test'
@@ -35,6 +34,7 @@ jobs:
 
     steps:
       - bash: |
+          ROSWELL_DIR=$(Agent.TempDirectory)/roswell
           PATH=$(Agent.TempDirectory)/.roswell/bin:$PATH
           ROSWELL_INSTALL_DIR=$(Agent.TempDirectory)/.roswell
           curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
@@ -42,9 +42,9 @@ jobs:
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
           echo $(Agent.TempDirectory)
-          $env:Path += "$(Agent.TempDirectory)\.roswell\bin"
-          echo roswell zip = $(ROSWELL_ZIP)
-          Invoke-WebRequest -Uri $(ROSWELL_ZIP) -OutFile Roswell.zip
+          $env:Path += "$(Agent.TempDirectory)\roswell\bin"
+          echo roswell zip = "$(ROSWELL_ZIP)"
+          Invoke-WebRequest -Uri "$(ROSWELL_ZIP)" -OutFile Roswell.zip
           7z x -o"$(Agent.TempDirectory)" Roswell.zip
           ros install $LISP
           ros config
@@ -54,10 +54,10 @@ jobs:
       - bash: |
           echo home = $HOME
           echo Agent temp = $(Agent.TempDirectory)
-          PATH=$(Agent.TempDirectory)/.roswell/bin:$PATH
+          PATH=$(Agent.TempDirectory)/roswell/bin:$PATH
           ros install neil-lindquist/ci-utils
           echo $PATH
-          ls $(Agent.TempDirectory)/.roswell/bin
+          ls $(Agent.TempDirectory)/roswell/bin
           asdf-register-project
           run-fiveam -e t -l foo/test :foo-tests-errors
           run-fiveam -e t -l foo/test :foo-tests
