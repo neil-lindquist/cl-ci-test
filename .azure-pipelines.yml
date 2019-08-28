@@ -55,7 +55,9 @@ jobs:
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
       - bash: |
+          echo $PATH
           PATH=$PATH:${PATH_ENTRY//\\/\//}
+          echo $PATH
           ros install neil-lindquist/ci-utils
           asdf-register-project
           run-fiveam -e t -l foo/test :foo-tests-error
