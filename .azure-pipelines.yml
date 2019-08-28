@@ -48,19 +48,15 @@ jobs:
           echo $env:Path
           Invoke-WebRequest -Uri "$(ROSWELL_ZIP)" -OutFile Roswell.zip
           7z x -o"$(Agent.TempDirectory)" Roswell.zip
+          dir "$(Agent.TempDirectory)\roswell"
           ros install $LISP
           ros config
         displayName: Install Roswell
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
       - bash: |
-          echo home = $HOME
-          echo Agent temp = $(Agent.TempDirectory)
-          PATH=$PATH:$(PATH_ENTRY)
-          echo $PATH
           ros install neil-lindquist/ci-utils
-          ls $(Agent.TempDirectory)/roswell/bin
           asdf-register-project
-          run-fiveam -e t -l foo/test :foo-tests-errors
+          run-fiveam -e t -l foo/test :foo-tests-error
           run-fiveam -e t -l foo/test :foo-tests
         displayName: Run Tests
