@@ -39,14 +39,16 @@ jobs:
     steps:
       - bash: |
           ROSWELL_DIR=$(Agent.TempDirectory)/roswell
-          PATH=$PATH:$(PATH_ENTRY)
           ROSWELL_INSTALL_DIR=$(Agent.TempDirectory)/roswell
+          PATH=$PATH:$(PATH_ENTRY)
+          echo $ROSWELL_DIR
+          echo $ROSWELL_INSTALL_DIR
           curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
           echo $(Agent.TempDirectory)
-          $env:Path += $(PATH_ENTRY)
+          $env:Path += "$(PATH_ENTRY)"
           echo roswell zip = "$(ROSWELL_ZIP)"
           Invoke-WebRequest -Uri "$(ROSWELL_ZIP)" -OutFile Roswell.zip
           7z x -o"$(Agent.TempDirectory)" Roswell.zip
