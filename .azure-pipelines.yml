@@ -16,34 +16,32 @@ jobs:
         win_sbcl:
           target: 'x86_64-windows-10'
           imageName: 'vs2017-win2016'
-          PATH_ENTRY: ;$(Agent.TempDirectory)\roswell
           LISP: sbcl-bin
         linux_sbcl:
           target: 'x86_64-unknown-linux-gnu'
           imageName: 'ubuntu-16.04'
-          PATH_ENTRY: $HOME/.roswell/bin:/etc/roswell/bin
           LISP: sbcl-bin
         linux_ccl:
           target: 'x86_64-unknown-linux-gnu'
           imageName: 'ubuntu-16.04'
-          PATH_ENTRY: $HOME/.roswell/bin:/etc/roswell/bin
           LISP: ccl-bin
         mac_sbcl:
           target: 'x86_64-apple-darwin'
           imageName: 'macos-10.13'
-          PATH_ENTRY: $HOME/.roswell/bin:/etc/roswell/bin
           LISP: sbcl-bin
     pool:
       vmImage: $(imageName)
 
     steps:
       - bash: |
-          PATH=$PATH:$(PATH_ENTRY)
+          PATH=$PATH:$HOME/.roswell/bin:/etc/roswell/bin
+          echo "##vso[task.setvariable variable=PATH]$PATH"
           curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
-          $env:Path += "$(PATH_ENTRY)"
+          $env:Path += ";$(Agent.TempDirectory)\roswell"
+          Write-Host "##vso[task.setvariable variable=PATH]$env:PATH"
           echo zip: "$(ROSWELL_ZIP)"
           echo $env:Path
           Invoke-WebRequest -Uri "$(ROSWELL_ZIP)" -OutFile Roswell.zip
@@ -55,8 +53,6 @@ jobs:
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
       - bash: |
-          echo $PATH
-          PATH=$PATH:${PATH_ENTRY//\\/\//}
           echo $PATH
           ros install neil-lindquist/ci-utils
           asdf-register-project
