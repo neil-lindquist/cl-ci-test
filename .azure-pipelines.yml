@@ -53,8 +53,9 @@ jobs:
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
       - bash: |
-          echo $PATH
+          set -e
           ros install neil-lindquist/ci-utils
           asdf-register-project
           run-fiveam -e t -l foo/test :foo-tests-error
+          run-fiveam -e t -l foo/test :foo-tests
         displayName: Run Tests
