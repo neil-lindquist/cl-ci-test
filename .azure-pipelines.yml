@@ -40,7 +40,7 @@ jobs:
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
-          $env:Path += ";$(Agent.TempDirectory)\roswell"
+          $env:Path += ";$(Agent.TempDirectory)\roswell;$env:USERPROFILE\.roswell\bin"
           Write-Host "##vso[task.setvariable variable=PATH]$env:PATH"
           echo zip: "$(ROSWELL_ZIP)"
           echo $env:Path
