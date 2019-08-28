@@ -1,4 +1,4 @@
-# Based on https://pastebin.com/u4gUKtYN and https://github.com/realark/cl-sample-game/blob/master/azure-pipelines.yaml
+# Uses ideas from https://pastebin.com/u4gUKtYN
 
 trigger:
   branches:
@@ -7,12 +7,15 @@ trigger:
     include: ['*']
 
 variables:
+  # This URL is pulled out because it's too long to be nicely readable
   ROSWELL_ZIP: https://ci.appveyor.com/api/projects/snmsts/roswell-en89n/artifacts/Roswell-x86_64.zip?branch=master&job=Environment%3A%20MSYS2_ARCH%3Dx86_64,%20MSYS2_BITS%3D64,%20MSYSTEM%3DMINGW64,%20METHOD%3Dcross
 
 jobs:
   - job: 'Test'
     strategy:
       matrix:
+        # Configure OS and lisp implementations here
+        # Each combination of OS and implementation needs it's own section
         win_sbcl:
           target: 'x86_64-windows-10'
           imageName: 'vs2017-win2016'
@@ -35,21 +38,18 @@ jobs:
     steps:
       - bash: |
           PATH=$PATH:$HOME/.roswell/bin:/etc/roswell/bin
-          echo "##vso[task.setvariable variable=PATH]$PATH"
+          echo "##vso[task.setvariable variable=PATH]$PATH" #Store the configured PATH for later steps
           curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
-        displayName: Install Roswell
+        displayName: Install Roswell for *nix
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
           $env:Path += ";$(Agent.TempDirectory)\roswell;$env:USERPROFILE\.roswell\bin"
-          Write-Host "##vso[task.setvariable variable=PATH]$env:PATH"
-          echo zip: "$(ROSWELL_ZIP)"
-          echo $env:Path
+          Write-Host "##vso[task.setvariable variable=PATH]$env:PATH" #Store the configured PATH for later steps.  It is important to do that here, because of complications in managing the type of slash in bash vs pwsh
           Invoke-WebRequest -Uri "$(ROSWELL_ZIP)" -OutFile Roswell.zip
           7z x -o"$(Agent.TempDirectory)" Roswell.zip
-          dir "$(Agent.TempDirectory)\roswell"
           ros install $LISP
           ros config
-        displayName: Install Roswell
+        displayName: Install Roswell for Windows
         condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
       - bash: |
@@ -57,5 +57,5 @@ jobs:
           ros install neil-lindquist/ci-utils
           asdf-register-project
           run-fiveam -e t -l foo/test :foo-tests
-          run-fiveam -e t -l foo/test :foo-tests
+          run-fiveam -e t -l foo/test :foo-tests-error
         displayName: Run Tests
