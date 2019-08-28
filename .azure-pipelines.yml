@@ -16,18 +16,22 @@ jobs:
         win_sbcl:
           target: 'x86_64-windows-10'
           imageName: 'vs2017-win2016'
+          PATH_ENTRY: $(Agent.TempDirectory)\roswell
           LISP: sbcl-bin
         linux_sbcl:
           target: 'x86_64-unknown-linux-gnu'
           imageName: 'ubuntu-16.04'
+          PATH_ENTRY: $(Agent.TempDirectory)/roswell/bin
           LISP: sbcl-bin
         linux_ccl:
           target: 'x86_64-unknown-linux-gnu'
           imageName: 'ubuntu-16.04'
+          PATH_ENTRY: $(Agent.TempDirectory)/roswell/bin
           LISP: ccl-bin
         mac_sbcl:
           target: 'x86_64-apple-darwin'
           imageName: 'macos-10.13'
+          PATH_ENTRY: $(Agent.TempDirectory)/roswell/bin
           LISP: sbcl-bin
     pool:
       vmImage: $(imageName)
@@ -35,14 +39,14 @@ jobs:
     steps:
       - bash: |
           ROSWELL_DIR=$(Agent.TempDirectory)/roswell
-          PATH=$(Agent.TempDirectory)/.roswell/bin:$PATH
-          ROSWELL_INSTALL_DIR=$(Agent.TempDirectory)/.roswell
+          PATH=$PATH:$(PATH_ENTRY)
+          ROSWELL_INSTALL_DIR=$(Agent.TempDirectory)/roswell
           curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
         displayName: Install Roswell
         condition: ne( variables['Agent.OS'], 'Windows_NT' )
       - pwsh: |
           echo $(Agent.TempDirectory)
-          $env:Path += "$(Agent.TempDirectory)\roswell\bin"
+          $env:Path += $(PATH_ENTRY)
           echo roswell zip = "$(ROSWELL_ZIP)"
           Invoke-WebRequest -Uri "$(ROSWELL_ZIP)" -OutFile Roswell.zip
           7z x -o"$(Agent.TempDirectory)" Roswell.zip
@@ -54,9 +58,9 @@ jobs:
       - bash: |
           echo home = $HOME
           echo Agent temp = $(Agent.TempDirectory)
-          PATH=$(Agent.TempDirectory)/roswell/bin:$PATH
-          ros install neil-lindquist/ci-utils
+          PATH=$PATH:$(PATH_ENTRY)
           echo $PATH
+          ros install neil-lindquist/ci-utils
           ls $(Agent.TempDirectory)/roswell/bin
           asdf-register-project
           run-fiveam -e t -l foo/test :foo-tests-errors
