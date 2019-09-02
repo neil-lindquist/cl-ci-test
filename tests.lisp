@@ -1,14 +1,14 @@
-(uiop:define-package :foo-tests-parachute
+(uiop:define-package :foo-tests
   (:use :cl
-        :parachute))
-(in-package :foo-tests-parachute)
+        :fiveam))
+(in-package :foo-tests)
 
-(format t "Loading foo/tests-parachute")
+(format t "Loading foo/tests")
 
-(define-test :foo-parachute-tests
+(test :foo-tests
   (format t "Running tests~%")
   (is (= 2 (+ 1 1))))
 
-(define-test :foo-parachute-tests-error
+(test :foo-tests-error
   (format t "Running error tests~%")
   (is (= 1 (+ 1 1))))
