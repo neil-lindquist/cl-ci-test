@@ -27,24 +27,22 @@ env:
 
 # Additional OS/Lisp combinations can be added to those generated above
 matrix:
+  fast_finish: true
+
   include:
     - os: osx
       env: LISP=sbcl-bin
     - os: osx
       env: LISP=ccl-bin
-
+#
 # Some jobs can be marked as allowed to fail
 # Note that this should only be used if there is no interest for the library to work on that system
-#matrix:
 #  allow_failures:
 #    - env: LISP=abcl
 #    - env: LISP=ecl
 #    - env: LISP=cmucl
 #    - env: LISP=alisp
 #      os: osx
-
-matrix:
-  fast_finish: true
 
 cache:
   directories:
