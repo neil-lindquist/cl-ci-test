@@ -5,10 +5,10 @@
 
 (format t "Loading foo/tests-parachute")
 
-(define-test :foo-parachute-tests
+(define-test foo-parachute-tests
   (format t "Running tests~%")
   (is = 2 (+ 1 1)))
 
-(define-test :foo-parachute-tests-error
+(define-test foo-parachute-tests-error
   (format t "Running error tests~%")
   (is = 1 (+ 1 1)))
