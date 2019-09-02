@@ -62,6 +62,8 @@ install:
   #- if [ "$LISP" == "ccl-bin" ]; then git clone https://gitlab.common-lisp.net/asdf/asdf.git ~/common-lisp; fi
 
 script:
-  - run-fiveam -e t -l foo/test :foo-tests
+  #- run-fiveam -e t -l foo/test :foo-tests
+  - roswell/run-parachute -e t -l foo/test-parachute :foo-parachute-tests
+  - roswell/run-parachute -e t -l foo/test-parachute :foo-parachute-tests-error
   #- run-prove foo.asd
   #- rove foo.asd
