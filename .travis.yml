@@ -63,7 +63,7 @@ install:
 
 script:
   #- run-fiveam -e t -l foo/test :foo-tests
-  - roswell/run-parachute -e t -l foo/test-parachute :foo-parachute-tests
-  - roswell/run-parachute -e t -l foo/test-parachute :foo-parachute-tests-error
+  - roswell/run-parachute.ros -e t -l foo/test-parachute :foo-parachute-tests
+  - roswell/run-parachute.ros -e t -l foo/test-parachute :foo-parachute-tests-error
   #- run-prove foo.asd
   #- rove foo.asd
