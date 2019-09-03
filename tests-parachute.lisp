@@ -9,6 +9,6 @@
   (format t "Running tests~%")
   (is = 2 (+ 1 1)))
 
-(define-test foo-parachute-tests-non-error
+(define-test foo-parachute-tests-error
   (format t "Running error tests~%")
   (is = 1 (+ 1 1)))

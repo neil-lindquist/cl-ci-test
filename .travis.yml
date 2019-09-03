@@ -63,5 +63,6 @@ script:
   #- run-fiveam -e t -l foo/test :foo-tests
   - roswell/run-parachute.ros -r quiet -e t -l foo/test-parachute foo-tests-parachute::foo-parachute-tests
   - roswell/run-parachute.ros --report quiet -e t -l foo/test-parachute foo-tests-parachute::foo-parachute-tests-error
+  - roswell/run-parachute.ros --report quiet -e t -l foo/test-parachute foo-tests-parachute
   #- run-prove foo.asd
   #- rove foo.asd
