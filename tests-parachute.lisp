@@ -11,4 +11,4 @@
 
 (define-test foo-parachute-tests-non-error
   (format t "Running error tests~%")
-  (is = 1 (+ 0 1)))
+  (is = 1 (+ 1 1)))
