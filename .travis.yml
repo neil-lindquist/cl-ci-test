@@ -51,7 +51,7 @@ cache:
 
 install:
   - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
-  - ros install ci-utils #for run-fiveam
+  - ros install neil-lindquist/ci-utils/bundle-script #for run-fiveam
 #  - ros install prove #for run-prove
 #  - ros install rove #for [run-] rove
 
@@ -61,5 +61,10 @@ install:
 
 script:
   - run-fiveam -e t -l foo/test :foo-tests
+
+  - bundle-lisp source foo -o .
+  - test -e foo.lisp
+  - bundle-lisp source --monolithic foo --output ~
+  - test -e ~/foo--all-systems.lisp
   #- run-prove foo.asd
   #- rove foo.asd
