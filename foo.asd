@@ -4,6 +4,7 @@
   :version "1.0.0"
   :author "Neil Lindquist <NeilLindquist5@gmail.com>"
   :license "MIT"
+  :components ((:file "foo-src"))
   :in-order-to ((test-op (test-op "ci-utils/test"))))
 
 
