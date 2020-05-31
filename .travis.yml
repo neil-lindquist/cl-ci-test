@@ -66,5 +66,9 @@ script:
   - test -e foo.lisp
   - bundle-lisp source --monolithic foo --output ~
   - test -e ~/foo--all-systems.lisp
+  - bundle-lisp image foo --output .
+
+  - ls .
+  - ls ~
   #- run-prove foo.asd
   #- rove foo.asd
